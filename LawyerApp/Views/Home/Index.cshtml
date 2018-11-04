@@ -38,7 +38,7 @@
             <hr>
             <h2>@resource["Our_Team"]</h2>
             <p>
-                @Model.TeamService.TeamDescription
+                @Model.TeamService?.TeamDescription
             </p>
             <a asp-action="team" class="btn btn-default">@resource["More"]</a>
         </section>
@@ -46,7 +46,7 @@
             <hr>
             <h2>@resource["Services"]</h2>
             <p>
-                @Model.TeamService.ServicesDescription
+                @Model.TeamService?.ServicesDescription
             </p>
             <a asp-action="practice" class="btn btn-default">@resource["More"]</a>
         </section>
@@ -57,14 +57,14 @@
                 </h4>
                 <p>@resource["For_A_Free_Consultation"]</p>
                 <a asp-action="services" class="btn btn-default">@resource["Schedule_Consultation"]</a>
-                <h4>@Model.Contact.ContactNumber</h4>
+                <h4>@Model.Contact?.ContactNumber</h4>
                 <span>
-                    @Model.Contact.ContactAdress
+                    @Model.Contact?.ContactAdress
                 </span>
                 <label>
                     @resource["Email"]
                 </label>
-                <span>@Model.Contact.ContactEmail</span>
+                <span>@Model.Contact?.ContactEmail</span>
                 <div class="clipPath"></div>
             </div>
             <div class="main-areas">

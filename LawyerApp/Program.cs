@@ -54,7 +54,34 @@ namespace LawyerApp
                     }
                 }
 
-                webHost.Run();
+                using (LawyerDbContext lawyerdbcontext = serviceScope.ServiceProvider.GetRequiredService<LawyerDbContext>())
+                {
+                    if (!lawyerdbcontext.Languages.Any())
+                    {
+                        IEnumerable<Language> languages = new List<Language>
+                        {
+                            new Language
+                            {
+                                LangShort = "en-US",
+                                LangLong = "English",
+                            },
+                            new Language
+                            {
+                                LangShort = "az-LATN",
+                                LangLong = "Azerbaijan",
+                            },
+                            new Language
+                            {
+                                LangShort = "ru-RU",
+                                LangLong = "Russian",
+                            }
+                         };
+                        lawyerdbcontext.AddRange(languages);
+                    }
+                    lawyerdbcontext.SaveChanges();
+                }
+
+                    webHost.Run();
             }
         }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

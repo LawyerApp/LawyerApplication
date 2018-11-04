@@ -46,6 +46,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                         Id = id,
                         ContactEmail = staticData.ContactEmail,
                         ContactNumber = staticData.ContactNumber,
+                        ContactHomeNumber=staticData.ContactHomeNumber,
                         ContactAdresses = (await lawyerDbContext.GetContactViewAsync())
                         .Select(m => new ContactMap
                         {
@@ -85,6 +86,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
 
                     staticData.ContactEmail = contactEditModel.ContactEmail;
                     staticData.ContactNumber = contactEditModel.ContactNumber;
+                    staticData.ContactHomeNumber = contactEditModel.ContactHomeNumber;
 
                     IEnumerable<Text> adressTextAllLanguage = await lawyerDbContext.Texts
                                                                                       .Where(m => m.Key == staticData.ContactAdressKey)

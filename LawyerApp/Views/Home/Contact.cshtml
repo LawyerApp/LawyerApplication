@@ -7,13 +7,13 @@
         <article>
             <h3>@resource["Address"]</h3>
             <address>
-                @Model.Address
+                @Model?.Address
             </address>
         </article>
         <article>
             <div class="phone-number">
                 <h3 class="colorChanged">@resource["Telephone"]</h3>
-                <span class="colorChanged">@Model.Number</span>
+                <span class="colorChanged">@Model?.Number</span>
             </div>
         </article>
     </div>

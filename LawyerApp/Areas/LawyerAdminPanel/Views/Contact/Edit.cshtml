@@ -51,11 +51,21 @@
                         </div>
                     </div>
                    
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">@Html.DisplayNameFor(m => m.ContactHomeNumber)</label>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded12">Home Number</label>
+                        <div class="col-lg-6">
+                            <input type="text" asp-for="ContactHomeNumber" class="form-control input-rounded" placeholder="Enter home number">
+                            <span asp-validation-for="ContactHomeNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
                     <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">Address</label>
                     @for (int i = 0; i < Model.Languages.Count; i++)
                     {
                         <div class="form-group row">
-                            <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded12">@Model.Languages[i].LangShort</label>
+                            <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded12">@Model.Languages[i].LangLong</label>
                             <div class="col-lg-6">
                                 <textarea type="text" asp-for="ContactAdresses[i].ContactAdress" rows="5" class="form-control input-rounded" placeholder="Description"></textarea>
                                 <span asp-validation-for="ContactAdresses[i].ContactAdress" class="text-danger"></span>

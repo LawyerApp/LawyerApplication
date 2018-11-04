@@ -47,7 +47,7 @@ namespace LawyerApp.Infrastructures
         {
             return await (from s in lawyerDbContext.StaticDatas
                           join t in lawyerDbContext.Texts on s.ContactAdressKey equals t.Key
-                          select new ContactDto { Id=s.Id, ContactEmail=s.ContactEmail, ContactNumber=s.ContactNumber, ContactAdress=t.TextContent, LanguageId=t.LanguageId }).ToListAsync();
+                          select new ContactDto { Id=s.Id, ContactEmail=s.ContactEmail, ContactHomeNumber=s.ContactHomeNumber, ContactNumber=s.ContactNumber, ContactAdress=t.TextContent, LanguageId=t.LanguageId }).ToListAsync();
         }
 
         public async static Task<IEnumerable<FirmDto>> GetFirmViewAsync(this LawyerDbContext lawyerDbContext)

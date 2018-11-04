@@ -11,6 +11,8 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Models
         public int Id { get; set; }
         [Display(Name ="Phone Number")]
         public string ContactNumber { get; set; }
+        [Display(Name = "Home Number")]
+        public string ContactHomeNumber { get; set; }
         [Display(Name ="Email")]
         public string ContactEmail { get; set; }
         [Display(Name ="Adress")]

@@ -3,6 +3,9 @@
 @section styles{ 
     <!-- Specific Page Vendor CSS -->
    <link rel="stylesheet" href="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css" />
+    <link rel="stylesheet" href="~/vendor/select2/css/select2.css" /> 
+    <link rel="stylesheet" href="~/vendor/select2-bootstrap-theme/select2-bootstrap.min.css" />
+	<link rel="stylesheet" href="~/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
 }
 
 <header class="page-header">
@@ -92,19 +95,20 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded">Area</label>
+                        <label class="col-lg-3 control-label text-lg-right pt-2">Area</label>
                         <div class="col-lg-6">
-                            <select class="form-control mb-3" asp-for="AreaId">
-                                <option value="">Select area</option>
-                                @foreach (AreaDto item in Model.Areas)
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
+                            <select multiple data-plugin-selectTwo class="form-control populate" asp-for="AreaId">
+                                <option value="">Select area </option>
+                                <optgroup label="Practice areas">
+                                    @foreach (AreaDto item in Model.Areas)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </optgroup>
                             </select>
                             <span asp-validation-for="AreaId" class="text-danger"></span>
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <label class="col-lg-3 control-label text-lg-right pt-2">File Upload</label>
                         <div class="col-lg-6">
@@ -137,6 +141,8 @@
 @section scripts{ 
     <!-- Specific Page Vendor -->
 <script src="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+<script src="~/vendor/select2/js/select2.js"></script>
+<script src="~/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
 <partial name="_ValidationScriptsPartial" />
 
 }

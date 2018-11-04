@@ -10,7 +10,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Models
         public int Id { get; set; }
         public List<TeamMemberCreateModel> TeamMembers { get; set; }
         [Required(ErrorMessage ="The Area field is required .")]
-        public int AreaId { get; set; }
+        public List<int> AreaId { get; set; }
         public IFormFile Img { get; set; }
         [Required]
         public byte Begin { get; set; }

@@ -4,14 +4,16 @@ using LawyerApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LawyerApp.Migrations
 {
     [DbContext(typeof(LawyerDbContext))]
-    partial class LawyerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181104111209_updateDb")]
+    partial class updateDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +158,7 @@ namespace LawyerApp.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new Guid("9581af79-ca50-45da-b2e8-7c1e88daa929"));
+                        .HasDefaultValue(new Guid("46f1d167-6b43-43fb-84c7-2f7af2c5833d"));
 
                     b.Property<bool>("Acceept")
                         .ValueGeneratedOnAdd()
@@ -218,10 +220,6 @@ namespace LawyerApp.Migrations
                     b.Property<string>("ContactEmail")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<string>("ContactHomeNumber")
-                        .IsRequired()
-                        .HasMaxLength(20);
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()

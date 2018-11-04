@@ -11,11 +11,18 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Models
         public List<ContactMap> ContactAdresses { get; set; }
 
         [Required(ErrorMessage = "The phone number field is required.")]
+        [StringLength(maximumLength: 15)]
         [RegularExpression(@"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Please enter a valid phone number.")]
         [Display(Name = "Phone Number")]
         public string ContactNumber { get; set; }
 
+        [Required(ErrorMessage = "The phone number field is required.")]
+        [StringLength(maximumLength: 20)]
+        [Display(Name = "Phone Number")]
+        public string ContactHomeNumber { get; set; }
+
         [Required(ErrorMessage = "The email field is required.")]
+        [StringLength(maximumLength:50)]
         [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", ErrorMessage = "Please enter a valid email.")]
         [Display(Name = "Email")]
         public string ContactEmail { get; set; }

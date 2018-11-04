@@ -6,14 +6,14 @@
     <div class="firm-main-content">
         <article>
             <strong>
-                @Model.Title
+                @Model?.Title
             </strong>
             <p>
-                @Model.Description
+                @Model?.Description
             </p>
         </article>
         <article>
-            <img src="~/Uploads/@Model.Img" title="Our Firm">
+            <img src="~/Uploads/@Model?.Img" title="Our Firm">
         </article>
     </div>
 </main>

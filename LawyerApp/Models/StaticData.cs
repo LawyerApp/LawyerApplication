@@ -17,6 +17,9 @@ namespace LawyerApp.Models
         [StringLength(maximumLength:15)]
         public string ContactNumber { get; set; }
         [Required]
+        [StringLength(maximumLength: 20)]
+        public string ContactHomeNumber { get; set; }
+        [Required]
         [StringLength(maximumLength:50)]
         public string ContactEmail { get; set; }
         [Required]

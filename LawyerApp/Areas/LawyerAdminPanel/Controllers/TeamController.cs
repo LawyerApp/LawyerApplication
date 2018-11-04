@@ -53,7 +53,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(List<TeamMemberCreateModel> TeamMembers, byte Begin, byte End, IFormFile Img, [FromForm] int AreaId)
+        public async Task<IActionResult> Create(List<TeamMemberCreateModel> TeamMembers, [FromForm] byte Begin, [FromForm] byte End, IFormFile Img, List<int> AreaId)
         {
             if (ModelState.IsValid)
             {
@@ -109,11 +109,13 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                    
                     await lawyerDbContext.SaveChangesAsync();
 
-                    await lawyerDbContext.TeamToAreas.AddAsync(new TeamToArea
+                    IEnumerable<TeamToArea> teamToAreas = AreaId.Select(m => new TeamToArea
                     {
-                        AreaId = AreaId,
-                        TeamMemberId = teamMember.Id
+                         AreaId=m,
+                         TeamMemberId=teamMember.Id
                     });
+
+                    await lawyerDbContext.AddRangeAsync(teamToAreas);
 
                     await lawyerDbContext.SaveChangesAsync();
                     transaction.Commit();
@@ -192,7 +194,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                     teamMemberEditModel.Areas = (await lawyerDbContext.GetAreaViewAsync())
                                                              .Where(m => m.LanguageId == DbContextService.GetLanguageIdByShortName(lawyerDbContext))?.ToList();
 
-                    teamMemberEditModel.AreaId = lawyerDbContext.TeamToAreas.SingleOrDefault(m => m.TeamMemberId == id).AreaId;
+                    teamMemberEditModel.AreaId = lawyerDbContext.TeamToAreas.Where(m => m.TeamMemberId == id).Select(m=>m.AreaId).ToList();
 
                     return View(teamMemberEditModel);
                 }
@@ -207,7 +209,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Required][FromForm]int id, List<TeamMemberCreateModel> TeamMembers, IFormFile Img, byte Begin, byte End, [FromForm] int AreaId)
+        public async Task<IActionResult> Edit([Required][FromForm]int id, List<TeamMemberCreateModel> TeamMembers, IFormFile Img, byte Begin, byte End, List<int> AreaId)
         {
             if (ModelState.IsValid)
             {
@@ -217,8 +219,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                     transaction = await lawyerDbContext.Database.BeginTransactionAsync();
 
                     TeamMember teamMember = await lawyerDbContext.TeamMembers.FindAsync(id);
-                    TeamToArea teamToArea = lawyerDbContext.TeamToAreas.SingleOrDefault(m=>m.TeamMemberId==id);
-                    teamToArea.AreaId = AreaId;
+                    var teamToAreas = lawyerDbContext.TeamToAreas.Where(m => m.TeamMemberId == id).ToList();
 
                     if (teamMember == null)
                         throw new NullReferenceException("This member doesn't exist !!!");
@@ -232,6 +233,16 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                         teamMember.Img = await FileService.UploadImageAsync(Img, "Uploads");
                         FileService.DeleteFile(fileName, "Uploads");
                     }
+
+                    lawyerDbContext.TeamToAreas.RemoveRange(teamToAreas);
+
+                    IEnumerable<TeamToArea> teamToAreaInsert = AreaId.Select(m => new TeamToArea
+                    {
+                         AreaId=m,
+                         TeamMemberId=id
+                    });
+
+                    await lawyerDbContext.TeamToAreas.AddRangeAsync(teamToAreaInsert);
 
                     IEnumerable<Text> nameTextAllLanguage= await lawyerDbContext.Texts
                                                                                    .Where(m => m.Key == teamMember.NameKey)
@@ -300,7 +311,7 @@ namespace LawyerApp.Areas.LawyerAdminPanel.Controllers
                                                             .ToListAsync(),
                 Areas = (await lawyerDbContext.GetAreaViewAsync())
                                                   .Where(m => m.LanguageId == DbContextService.GetLanguageIdByShortName(lawyerDbContext)).ToList(),
-                AreaId = lawyerDbContext.TeamToAreas.SingleOrDefault(m => m.TeamMemberId == id).AreaId
+                AreaId = lawyerDbContext.TeamToAreas.Where(m => m.TeamMemberId == id).Select(m => m.AreaId).ToList()
 
         };
 

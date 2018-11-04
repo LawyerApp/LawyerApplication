@@ -63,7 +63,7 @@ namespace LawyerApp.Controllers
             FırmViewModel firmViewModel = null;
             try
             {
-                StaticData staticData = await lawyerDbContext.StaticDatas.SingleOrDefaultAsync();
+               // StaticData staticData = await lawyerDbContext.StaticDatas?.SingleOrDefaultAsync();
 
                 int? languageId = DbContextService.GetLanguageIdByShortName(lawyerDbContext, culture);
 
@@ -74,9 +74,9 @@ namespace LawyerApp.Controllers
 
                 firmViewModel = new FırmViewModel
                 {
-                    Title = firm.Title,
-                    Description = firm.Description,
-                    Img = firm.Img
+                    Title = firm?.Title,
+                    Description = firm?.Description,
+                    Img = firm?.Img
                 };
                
             }
@@ -122,9 +122,9 @@ namespace LawyerApp.Controllers
 
                 ContactsViewModel contactsViewModel = new ContactsViewModel
                 {
-                    Email = contact.ContactEmail,
-                    Number = contact.ContactNumber,
-                    Address = contact.ContactAdress
+                    Email = contact?.ContactEmail,
+                    Number = contact?.ContactNumber,
+                    Address = contact?.ContactAdress
                 };
 
                 return View(contactsViewModel);
