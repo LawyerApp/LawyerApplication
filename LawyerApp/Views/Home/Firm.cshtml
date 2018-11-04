@@ -1,0 +1,27 @@
+﻿@model FırmViewModel
+@inject IStringLocalizer<SharedResource> resource;
+
+<main class="firm-main">
+    <h1>@resource["Our_Firm"]</h1>
+    <div class="firm-main-content">
+        <article>
+            <strong>
+                @Model.Title
+            </strong>
+            <p>
+                @Model.Description
+            </p>
+        </article>
+        <article>
+            <img src="~/Uploads/@Model.Img" title="Our Firm">
+        </article>
+    </div>
+</main>
+@section scripts{
+    <script>
+        let element=document.querySelector(".firm-main-content p");
+        if(element.innerText.includes(sign)){
+            element.innerHTML=seperateText(element.innerText);
+        }
+    </script>
+}

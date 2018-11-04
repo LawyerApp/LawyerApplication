@@ -1,0 +1,192 @@
+﻿@model TeamMemberDetailModel
+
+<header class="page-header">
+    <h2>Team Members</h2>
+
+    <div class="right-wrapper text-right">
+        <ol class="breadcrumbs">
+            <li>
+                <a asp-action="index" asp-controller="team" >
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li><span>Team Member</span></li>
+            <li><span>Details</span></li>
+        </ol>
+
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+
+<!-- start: page -->
+
+<div class="row">
+    <div class="col-lg-4 col-xl-3 mb-4 mb-xl-0">
+
+        @{ 
+            TeamMemberDto teamMember = Model.TeamMemberViews.SingleOrDefault(m => m.LanguageId == (Model.Languages.SingleOrDefault(n => n.LangShort == "en-US").Id));
+        }
+        <section class="card">
+            <div class="card-body">
+                <div class="thumb-info mb-3">
+                    <img src="~/Uploads/@teamMember.Img" class="rounded img-fluid" alt="@teamMember.Name @teamMember.Surname">
+                    <div class="thumb-info-title" style="padding:9px 8px 9px">
+                        <span class="thumb-info-inner" style="font-size:11px;letter-spacing:0;">@teamMember.Name @teamMember.Surname</span>
+                        <span class="thumb-info-type">@Model.Area</span>
+                    </div>
+                </div>
+
+                <div class="widget-toggle-expand mb-3">
+                    <div class="widget-header">
+                        <h5 class="mb-2">Member Details</h5>
+                        <div class="widget-toggle">+</div>
+                    </div>
+                    <div class="widget-content-collapsed">
+                        <div class="progress progress-xs light">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content-expanded">
+                        <ul class="simple-todo-list mt-3">
+                            <li class="completed">Member name for current languages</li>
+                            <li class="completed">Member surname for current languages</li>
+                            <li class="completed">About Member for current languages</li>
+                            <li class="completed">Member's photo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr class="dotted short">
+
+
+                <div>
+                    <a asp-action="index" asp-controller="team"   class="btn btn-primary" title="Back To List"><i class="fa fa-arrow-left"></i></a>
+                    <a asp-action="edit" asp-controller="team"  asp-route-id="@teamMember.Id" class="btn btn-warning" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-8 col-xl-8">
+
+        <div class="tabs">
+            <ul class="nav nav-tabs tabs-primary">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#overview" data-toggle="tab">Overview</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="overview" class="tab-pane active">
+
+                    <div class="p-3">
+
+                        <h4 class="mb-3 pt-4">Member Details</h4>
+
+                        <div class="timeline timeline-simple mt-3 mb-3">
+                            <div class="tm-body">
+                                <div class="tm-title">
+                                    <h5 class="m-0 pt-2 pb-2 text-uppercase">Name</h5>
+                                </div>
+                                <ol class="tm-items">
+                                    <li>
+                                        <div class="tm-box">
+                                            <div class="row">
+                                                @foreach (var item in Model.TeamMemberViews)
+                                                {
+                                                    <div class="col-4">
+                                                        @{
+                                                            Language language = Model.Languages.SingleOrDefault(m => m.Id == item.LanguageId);
+                                                        }
+                                                        <p class="text-muted mb-0">@language.LangLong</p>
+                                                        <p>
+                                                            @item.Name <br /> <span class="text-primary">#@language.LangShort</span>
+                                                        </p>
+                                                    </div>
+                                                 }
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="timeline timeline-simple mt-3 mb-3">
+                            <div class="tm-body">
+                                <div class="tm-title">
+                                    <h5 class="m-0 pt-2 pb-2 text-uppercase">Surname</h5>
+                                </div>
+                                <ol class="tm-items">
+                                    <li>
+                                        <div class="tm-box">
+                                            <div class="row">
+                                                @foreach (var item in Model.TeamMemberViews)
+                                                {
+                                                    <div class="col-4">
+                                                        @{
+                                                            Language language = Model.Languages.SingleOrDefault(m => m.Id == item.LanguageId);
+                                                        }
+                                                        <p class="text-muted mb-0">@language.LangLong</p>
+                                                        <p>
+                                                            @item.Surname <br /> <span class="text-primary">#@language.LangShort</span>
+                                                        </p>
+                                                    </div>
+                                                 }
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="timeline timeline-simple mt-3 mb-3">
+                            <div class="tm-body">
+                                <div class="tm-title">
+                                    <h5 class="m-0 pt-2 pb-2 text-uppercase">Description</h5>
+                                </div>
+                                <ol class="tm-items">
+                                    @foreach (var item in Model.TeamMemberViews)
+                                    {
+                                        <li>
+                                            <div class="tm-box">
+                                                @{
+                                                    Language language = Model.Languages.SingleOrDefault(m => m.Id == item.LanguageId);
+                                                }
+                                                <p class="text-muted mb-0">@language.LangLong</p>
+                                                <p>
+                                                    @item.Description <br /> <span class="text-primary">#@language.LangShort</span>
+                                                </p>
+                                            </div>
+                                        </li>
+                                       }
+                                </ol>
+                            </div>
+                        </div>
+                       <div class="ml-5">
+                           <ol class="list-unstyled">
+                               <li>
+                                   <div class="tm-box">
+                                       <p class="text-muted mb-0" style="font-size:17px">@teamMember.Name @teamMember.Surname</p>
+                                       <p style="font-size:14px">
+                                           Photo
+                                       </p>
+                                       <div class="thumbnail-gallery">
+                                           <a class="img-thumbnail lightbox" href="~/Uploads/@teamMember.Img" data-plugin-options='{ "type":"image" }'>
+                                               <img class="img-fluid" width="215" src="~/Uploads/@teamMember.Img">
+                                               <span class="zoom">
+                                                   <i class="fa fa-search"></i>
+                                               </span>
+                                           </a>
+                                       </div>
+                                   </div>
+                               </li>
+                           </ol>
+                       </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end: page -->
+

@@ -1,0 +1,146 @@
+﻿@inject IStringLocalizer<SharedResource> resource;
+@{
+    ViewData["Title"] = "Index";
+}
+@section styles{
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href="~/calendar/calendar.css" rel="stylesheet" />
+}
+@Html.AntiForgeryToken()
+    <div class="container">
+        <h1 class="mt-4">@resource["ScheduleOnline"]</h1>
+        <div class="calendar-hr-div col-12 col-md-9 col-lg-5 p-0">
+            <hr />
+        </div>
+        <div class="row mt-5 mb-5">
+            <article class="col-md-12 col-12 col-lg-6">
+                <div id="calendar">
+                    <div id="calendar_header">
+                        <i class="icon-chevron-left">
+                            <img style="width:40%;margin-bottom: 45%;" class="img-fluid" src="~/calendar/img/left.png" alt="calendar left image" />
+                        </i>
+                        <h1></h1><i class="icon-chevron-right">
+    <img class="img-fluid" style="transform:rotate(180deg);width:40%;margin-bottom: 45%;" src="~/calendar/img/left.png" alt="calendar left image" />
+</i>
+                    </div>
+                    <div id="calendar_weekdays"></div>
+                    <div id="calendar_content"></div>
+                </div>
+            </article>
+            <atricle class="col-md-8 col-12 col-lg-6" id="choosenDates">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h5 class="area-name-schedule"></h5>
+                        <hr class="col-3" />
+                        <span class="area-name-schedule">
+                            1 @resource["hr"] | @resource["Consultation_Meeting"]
+                        </span>
+                        <span id="dateMonth">
+                          
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span id="notWorking" class="text-danger" style="display:none;">
+                            @resource["NotActiveDate"]
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                    <div class="col-md-12">
+                        <span id="notWorking" class="text-danger" style="display:none;">
+                            @resource["NotActiveDate"]
+                        </span>
+                    </div>
+                </div>
+            </atricle>
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/calendar/calendar.js"></script>
+    <script src="~/calendar/config.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#choosenDates h5").text(localStorage["LawName"])
+            try {
+                let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                let url = "/en-US/Calendar/GetWeekDaysAndHolidays?=" + date;
+                Infrastructures.checkAndPaintDays(url,date);
+            } catch (e) {
+                alert("something went wrong try again later");
+            }
+            $("#calendar_header i").click(function () {
+                try {
+                    let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                    let url = "/en-US/Calendar/GetWeekDaysAndHolidays?=" + date;
+                    Infrastructures.checkAndPaintDays(url, date);
+                } catch (e) {
+                    alert("something went wrong try again later");
+                }
+            });
+
+            $(document).on("click", "#calendar_content div", (e) => {
+                try {
+                    if (!$(this).hasClass("no-work")) {
+                        let element = e.target;
+                        if (!($(element).hasClass("no-work") || $(element).hasClass("holidaySelector"))) {
+                            let date = createDateFromString({ day: element.innerText, fullDate: $("#calendar_header h1").text(), time: "02:00" });
+                            if (new Date() < new Date(date) || new Date().getDay() === new Date(date).getDay()) {
+                                let token = $("input[name='__RequestVerificationToken']").val();
+                                localStorage["date"] = element.innerText;
+                                $("#dateMonth").text(element.innerText + " " + $("#calendar_header h1").text());
+                                $.ajax({
+                                    url: "/en-US/Calendar/TeammemberSelectNotWorkings",
+                                    data: {
+                                        dt: date,
+                                        __RequestVerificationToken: token
+                                    },
+                                    method: "post",
+                                    success: function (re) {
+                                        $("#choosenDates .col-md-6").empty();
+                                        
+                                        let data = Infrastructures.checkAndCreateTimes(fullHours, re.begin, re.end, re.schedules);
+                                        Infrastructures.createTablesUserInterface(data, "#choosenDates .col-md-6");
+                                        let elements = $("#choosenDates .col-md-6 .calendarTimes");
+                                        $("#calendar_content div").removeClass("selected-date")
+                                        $(element).addClass("selected-date")
+                                        if (elements.length === 0)
+                                            $("#notWorking").show();
+                                        else
+                                            $("#notWorking").hide();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                } catch (e) {
+                    alert("something went wrong please try again later");
+                }
+            });
+
+            $(document).on("click", ".calendarTimes", (e) => {
+                let elem = e.target;
+                let fullDate = $("#calendar_header h1").text();
+                let token = $("input[name='__RequestVerificationToken']").val();
+                let dateTime = createDateFromString({ day: localStorage["date"], fullDate: fullDate, time:elem.innerText });
+                $.ajax({
+                    url: "/en-US/Calendar/NoteAndCheckDate",
+                    data: {
+                        __RequestVerificationToken: token,
+                        date: dateTime
+                    },
+                    method:"post",
+                    success: function (res) {
+                        if (res === 200)
+                            window.location.href = "/en-US/Calendar/ScheduleDay";
+                        else {
+                            $("#notWorking").text(res);
+                            $("#notWorking").show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,53 @@
+﻿@model ContactsViewModel
+@inject IStringLocalizer<SharedResource> resource;
+
+<main class="contact-main">
+    <h1>@resource["Contact"]</h1>
+    <div class="contact-main-content">
+        <article>
+            <h3>@resource["Address"]</h3>
+            <address>
+                @Model.Address
+            </address>
+        </article>
+        <article>
+            <div class="phone-number">
+                <h3 class="colorChanged">@resource["Telephone"]</h3>
+                <span class="colorChanged">@Model.Number</span>
+            </div>
+        </article>
+    </div>
+    <div class="contact-main-content">
+        <article class="border-0">
+            <iframe src="https://www.google.com/maps/d/embed?mid=1hV1QxqkcgVAuETvSGJyGH18XbxY&hl=en" width="640" height="480"></iframe>
+        </article>
+        <article class="border-0">
+            <div>
+                <form asp-action="contact" method="post">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <input asp-for="Message.Name" type="text" class="form-control" placeholder="@resource["Name"] *">
+                        <span asp-validation-for="Message.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="Message.Email" type="email" class="form-control" placeholder="@resource["Email"] *">
+                        <span asp-validation-for="Message.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="Message.Subject" type="text" class="form-control" placeholder="@resource["Subject"] *">
+                        <span asp-validation-for="Message.Subject" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" asp-for="Message.Message" placeholder="@resource["Message"] *" rows="5"></textarea>
+                        <span asp-validation-for="Message.Message" class="text-danger"></span>
+                    </div>
+                    <input type="submit" value="@resource["Send"]" class="btn btn-default cur-pointer">
+                </form>
+            </div>
+        </article>
+    </div>
+</main>
+@section scripts{ 
+    <partial name="_ValidationScriptsPartial" />
+}

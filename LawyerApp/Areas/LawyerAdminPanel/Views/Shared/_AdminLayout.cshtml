@@ -1,0 +1,288 @@
+﻿<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>Default Layout | Porto Admin</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="Porto Admin LAwyer app">
+    <meta name="author" content="Seymur Ganbarov , Shamil Kamilli">
+    <link rel="shortcut icon" href="~/img/logo.jpg" />
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Web Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/vendor/animate/animate.css" />
+    <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="~/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+
+    @RenderSection("styles", required: false)
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="~/css/theme.css" />
+
+    <!-- Skin CSS -->
+    <link rel="stylesheet" href="~/css/skins/default.css" />
+
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="~/css/custom.css">
+
+    <!-- Head Libs -->
+    <script src="~/vendor/modernizr/modernizr.js"></script>
+
+</head>
+<body>
+    <section class="body">
+
+        <!-- start: header -->
+        <header class="header">
+            <div class="logo-container">
+                <a asp-action="index" asp-controller="team" class="logo">
+                    <img src="~/img/logo.jpg" width="75" height="35" alt="Porto Admin" />
+                </a>
+                <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+            </div>
+
+            <!-- start: search & user box -->
+            <div class="header-right">
+
+                @*<form action="pages-search-results.html" class="search nav-form">
+                    <div class="input-group input-search">
+                        <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>*@
+
+                <span class="separator"></span>
+
+                <ul class="notifications">
+                 <vc:unreaded-messages></vc:unreaded-messages>  
+                  
+                    @*<li>
+                        @*<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge">3</span>
+                        </a>
+
+                        <div class="dropdown-menu notification-menu">
+                            <div class="notification-title">
+                                <span class="float-right badge badge-default">3</span>
+                                Alerts
+                            </div>
+
+                            <div class="content">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="clearfix">
+                                            <div class="image">
+                                                <i class="fa fa-thumbs-down bg-danger text-light"></i>
+                                            </div>
+                                            <span class="title">Server is Down!</span>
+                                            <span class="message">Just now</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="clearfix">
+                                            <div class="image">
+                                                <i class="fa fa-lock bg-warning text-light"></i>
+                                            </div>
+                                            <span class="title">User Locked</span>
+                                            <span class="message">15 minutes ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="clearfix">
+                                            <div class="image">
+                                                <i class="fa fa-signal bg-success text-light"></i>
+                                            </div>
+                                            <span class="title">Connection Restaured</span>
+                                            <span class="message">10/10/2017</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <hr />
+
+                                <div class="text-right">
+                                    <a href="#" class="view-more">View All</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>*@
+                </ul>
+
+                <span class="separator"></span>
+               <vc:Claims></vc:Claims>
+            </div>
+            <!-- end: search & user box -->
+        </header>
+        <!-- end: header -->
+
+        <div class="inner-wrapper">
+            <!-- start: sidebar -->
+            <aside id="sidebar-left" class="sidebar-left">
+
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        Navigation
+                    </div>
+                    <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                    </div>
+                </div>
+
+                <div class="nano">
+                    <div class="nano-content">
+                        <nav id="menu" class="nav-main" role="navigation">
+
+                            <ul class="nav nav-main">
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="slider">
+                                        <i class="fa fa-file-photo-o" aria-hidden="true"></i>
+                                        <span>Slider</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="team">
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        <span>Team Members</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="area"  >
+                                        <i class="fa fa-th" aria-hidden="true"></i>
+                                        <span>Area</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="contact">
+                                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                                        <span>Contact</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="firm">
+                                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                        <span>Firm</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="about">
+                                        <i class="fa fa-gears" aria-hidden="true"></i>
+                                        <span>Team and Services</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="message">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                        <span>Message</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-action="index" asp-controller="account">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <span>User</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <hr class="separator" />
+                    </div>
+
+                    <script>
+                        // Maintain Scroll Position
+                        if (typeof localStorage !== 'undefined') {
+                            if (localStorage.getItem('sidebar-left-position') !== null) {
+                                var initialPosition = localStorage.getItem('sidebar-left-position'),
+                                    sidebarLeft = document.querySelector('#sidebar-left .nano-content');
+
+                                sidebarLeft.scrollTop = initialPosition;
+                            }
+                        }
+                    </script>
+
+
+                </div>
+
+            </aside>
+            <!-- end: sidebar -->
+            <section role="main" class="content-body">
+
+                @RenderBody()
+
+            </section>
+
+        </div>
+
+        <aside id="sidebar-right" class="sidebar-right">
+            <div class="nano">
+                <div class="nano-content">
+                    <a href="#" class="mobile-close d-md-none">
+                        Collapse <i class="fa fa-chevron-right"></i>
+                    </a>
+
+                    <div class="sidebar-right-wrapper">
+
+                        <div class="sidebar-widget widget-calendar">
+                            <h6>Upcoming Tasks</h6>
+                            <div data-plugin-datepicker data-plugin-skin="dark"></div>
+
+                            <ul>
+                                <li>
+                                    @{
+                                        string date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+                                    }
+                                    <time datetime="2018-10-19 20:00">@date</time>
+                                    <span>Company Meeting</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </section>
+
+
+
+    <!-- Vendor -->
+    <script src="~/vendor/jquery/jquery.js"></script>
+    <script src="~/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+    <script src="~/vendor/popper/umd/popper.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/vendor/common/common.js"></script>
+    <script src="~/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="~/vendor/magnific-popup/jquery.magnific-popup.js"></script>
+    <script src="~/vendor/jquery-placeholder/jquery-placeholder.js"></script>
+
+    @RenderSection("scripts",required:false)
+
+
+   
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="~/js/theme.js"></script>
+    <!-- Theme Custom -->
+    <script src="~/js/custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="~/js/theme.init.js"></script>
+    <script src="~/js/examples/examples.modals.js"></script>
+
+</body>
+</html>

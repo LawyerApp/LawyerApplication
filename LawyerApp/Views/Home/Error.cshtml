@@ -1,0 +1,26 @@
+﻿@using System.Net
+@{ 
+    var code = ViewBag.statusCode;
+}
+
+@if(code== (int)HttpStatusCode.NotFound)
+{
+   <div class="row">
+       <div class="col-12">
+           <img class="img-fluid w-100" src="~/img/error_404_http_code.jpg" />
+       </div>
+   </div>
+
+}
+else if (code == (int)HttpStatusCode.BadRequest)
+{
+    <div class="col-12">
+        <h1 class="text-center">400 BAD REQUEST</h1>
+    </div>
+}
+else
+{
+    <div class="col-12">
+        <h1 class="text-center">@code ERROR</h1>
+    </div>
+}

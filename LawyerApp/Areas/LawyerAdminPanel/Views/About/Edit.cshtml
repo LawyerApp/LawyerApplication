@@ -1,0 +1,74 @@
+﻿@model AboutViewModel
+
+<header class="page-header">
+    <h2>Our team and services</h2>
+    <div class="right-wrapper text-right">
+        <ol class="breadcrumbs">
+            <li>
+                <a asp-action="index" asp-controller="team">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li><span>About</span></li>
+            <li><span>Edit</span></li>
+        </ol>
+
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                </div>
+
+                <h2 class="card-title">Edit team and services</h2>
+            </header>
+            <div class="card-body">
+                <form asp-action="edit" asp-controller="about" class="form-horizontal form-bordered" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">Please fix the error.</div>
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.AntiForgeryToken()
+
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">Our Team Description</label>
+                    @for (int i = 0; i < Model.Languages.Count; i++)
+                    {
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded12">@Model.Languages[i].LangShort</label>
+                            <div class="col-lg-6">
+                                <textarea type="text" asp-for="TeamServices[i].OurTeamDescription" rows="5" class="form-control input-rounded" placeholder="Team description"></textarea>
+                                <span asp-validation-for="TeamServices[i].OurTeamDescription" class="text-danger"></span>
+                                <input type="hidden" asp-for="TeamServices[i].LanguageId" value="@Model.Languages[i].Id" />
+                            </div>
+                        </div>
+                    }
+
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">Our Services Description</label>
+                    @for (int i = 0; i < Model.Languages.Count; i++)
+                    {
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded12">@Model.Languages[i].LangShort</label>
+                            <div class="col-lg-6">
+                                <textarea type="text" asp-for="TeamServices[i].OurServicesDescription" rows="5" class="form-control input-rounded" placeholder="Services description"></textarea>
+                                <span asp-validation-for="TeamServices[i].OurServicesDescription" class="text-danger"></span>
+                                <input type="hidden" asp-for="TeamServices[i].LanguageId" value="@Model.Languages[i].Id" />
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-group row justify-content-center">
+                        <button type="submit" id="btnSubmit" class="btn btn-primary col-4 mr-4">Save</button>
+                        <a asp-action="index" asp-controller="about" class="btn btn-outline-primary col-4">Back To List</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

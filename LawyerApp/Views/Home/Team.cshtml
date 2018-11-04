@@ -1,0 +1,18 @@
+﻿@model IEnumerable<LawyerApp.Areas.LawyerAdminPanel.Models.TeamMemberDto>  
+@inject IStringLocalizer<SharedResource> resource;
+
+    <main class="attorney-main">
+        <h1>@resource["Attorney"]</h1>
+        <div class="attorney-main-content">
+          @foreach (var item in Model)
+          {
+            <article>
+                <img src="~/Uploads/@item.Img" alt="attorney">
+                <h3>@item.Name @item.Surname</h3>
+                <p>
+                    @item.Description
+                </p>
+            </article>
+          }
+       </div>
+    </main>

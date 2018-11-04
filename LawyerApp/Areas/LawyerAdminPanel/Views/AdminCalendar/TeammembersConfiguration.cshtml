@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@section styles{
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href="~/calendar/calendar.css" rel="stylesheet" />
+}
+
+<div id="calendar">
+    <div id="calendar_header"><i class="icon-chevron-left"><</i>          <h1></h1><i class="icon-chevron-right">></i>         </div>
+    <div id="calendar_weekdays"></div>
+    <div id="calendar_content"></div>
+</div>
+<div class="container table-calendar" style="display:none;">
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <button class="btn btn-dark w-100">Return calendar</button>
+        </div>
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Accept</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+@section scripts{
+    <script src="~/calendar/config.js"></script>
+    <script src="~/calendar/calendar.js"></script>
+    <script>
+        $(document).ready(() => {
+            ////configure enable days
+            try {
+                let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                let url = "/LawyerAdminPanel/AdminCalendar/GetweekDays?=" + date;
+                Infrastructures.checkAndPaintDays(url, date);
+            } catch (e) {
+                alert("something went wrong try again later");
+            }
+            $("#calendar_header i").click(function () {
+                try {
+                    let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                    let url = "/LawyerAdminPanel/AdminCalendar/GetweekDays?=" + date;
+                    Infrastructures.checkAndPaintDays(url, date);
+                } catch (e) {
+                    alert("something went wrong try again later");
+                }
+            });
+
+            $(document).on("click", "#calendar_content div", (e) => {
+                try {
+                    if (!$(this).hasClass("no-work")) {
+                        let element = e.target;
+                        if (!$(element).hasClass("no-work")) {
+                            let date = createDateFromString({ day: element.innerText, fullDate: $("#calendar_header h1").text(), time: "02:00" });
+                            if (new Date() < new Date(date) || new Date().getDay() === new Date(date).getDay()) {
+                                let token = $("input[name='__RequestVerificationToken']").val();
+                                localStorage["date"] = date;
+                                $.ajax({
+                                    url: "/LawyerAdminPanel/AdminCalendar/TeammemberSelectNotWorkings",
+                                    data: {
+                                        dt: date,
+                                        __RequestVerificationToken: token
+                                    },
+                                    method: "post",
+                                    success: function (re) {
+                                        $("#calendar").hide();
+                                        $(".table tbody").empty();
+                                        let data = Infrastructures.checkAndCreateTimes(fullHours, re.begin, re.end, re.schedules);
+                                        Infrastructures.createTable(data, ".table tbody");
+                                        $(".table-calendar").show();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                } catch (e) {
+                    alert("something went wrong please try again later");
+                }
+            });
+
+            $(".table-calendar button").click(function () {
+                $(".table-calendar").hide();
+                $("#calendar").show();
+            });
+
+            $(document).on("click", ".scheduleTime", function (e) {
+                try {
+                    let element = e.target;
+                    let dateTime = $(element).parent().siblings("th")[4].innerText;
+                    let newDate = new Date(localStorage["date"]).toDateString() + " " + dateTime;
+                    let token = $("input[name='__RequestVerificationToken']").val();
+                    $.ajax({
+                        url: "/LawyerAdminPanel/AdminCalendar/SechuduleDay",
+                        data: {
+                            date: newDate,
+                            __RequestVerificationToken: token
+                        },
+                        method: "post",
+                        success: function (res) {
+                            if (res === 200) {
+                                element.classList.add("btn-danger");
+                                element.classList.remove("btn-default");
+                                element.innerText = "Free this time";
+                            }
+                            else {
+                                element.classList.remove("btn-danger");
+                                element.classList.add("btn-default");
+                                element.innerText = "Busy this time";
+                            }
+                        }
+                    });
+                } catch (e) {
+                    alert("something went wrong please try again");
+                }
+            });
+
+            $(document).on("click", ".acceptTime", function (e) {
+                try {
+                    let element = e.target;
+                    let dateTime = $(element).parent().siblings("th")[4].innerText;
+                    let newDate = new Date(localStorage["date"]).toDateString() + " " + dateTime;
+                    let token = $("input[name='__RequestVerificationToken']").val();
+                    $.ajax({
+                        url: "/LawyerAdminPanel/AdminCalendar/AcceptOrNot",
+                        method: "post",
+                        data: {
+                            date: newDate,
+                            __RequestVerificationToken: token
+                        },
+                        success: function (res) {
+                            if (res === 200) {
+                                element.classList.remove("btn-danger");
+                                element.classList.add("btn-default");
+                                element.classList.add("scheduleTime");
+                                element.classList.remove("acceptTime");
+                                element.innerText = "Busy this time";
+                            } else {
+                                element.classList.remove("btn-success");
+                                element.classList.add("btn-danger");
+                                element.innerText = "decline";
+                            }
+                        }
+                    });
+                } catch (e) {
+                    alert("something went wrong please try again later");
+                }
+            });
+        });
+    </script>
+}
+
+

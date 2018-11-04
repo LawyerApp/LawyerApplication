@@ -1,0 +1,97 @@
+﻿@inject IStringLocalizer<SharedResource> resource
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="~/img/logo.jpg" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="~/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="~/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    @RenderSection("styles", required: false)
+    <title>HGN</title>
+</head>
+<body>
+    <header class="container-fluid main-header">
+        <div class="row">
+            <div class="col-5">
+                <img src="~/img/logo.jpg" alt="">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light col-7">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="home" asp-action="index">@resource["Home"] <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="home" asp-action="firm">@resource["Firm"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="home" asp-action="practice">@resource["Practice_Areas"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" asp-controller="home" asp-action="contact">@resource["Contact"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" asp-controller="home" asp-action="services">@resource["Book_Online"]</a>
+                        </li>
+                        @{
+                            var actionName = ViewContext.RouteData.Values["action"].ToString();
+                            var id = ViewContext.RouteData.Values["id"]?.ToString();
+                        }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @resource["Language"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a style="color:#2d2d2f!important;padding-left: 1rem;" class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="en-US">en</a>
+                                <a style="color:#2d2d2f!important;padding-left: 1rem;" class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="az-LATN">az</a>
+                                <a style="color:#2d2d2f!important;padding-left: 1rem;" class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="ru-RU">ru</a>
+                            </div>
+                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="en-US">en</a>
+                                <a class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="az-LATN">az</a>
+                                <a class="nav-link disabled" asp-action="@actionName" asp-route-id="@id" asp-route-culture="ru-RU">ru</a>
+
+                            </li>*@
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    @RenderBody()
+    <footer>
+        <div>
+            <p>&copy; 2018 www.hgn.com<p>
+        </div>
+        <div>
+            <p>
+                @resource["Follow_us"]:
+                <a href="#"> <i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+            </p>
+        </div>
+    </footer>
+    <script src="~/vendor/jquery/jquery.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Own.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        let elements = document.querySelectorAll(".main-team p");
+        for (let item of elements) {
+            if (item.innerText.includes(sign)) {
+                item.innerHTML = seperateText(item.innerText);
+            }
+        }
+    </script>
+</body>
+</html>

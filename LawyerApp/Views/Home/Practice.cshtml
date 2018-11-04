@@ -1,0 +1,24 @@
+﻿@model IEnumerable<LawyerApp.Areas.LawyerAdminPanel.Models.AreaDto>
+@inject IStringLocalizer<SharedResource> resource;
+
+<main class="practise-main">
+    <h1>@resource["Practice_Areas"]</h1>
+    <p>
+      @resource["Areatitle"]
+    </p>
+    <div class="practise-main-content">
+       @foreach (var item in Model)
+       {
+        <section class=" main-team">
+            <hr>
+            <h2>@item.Name</h2>
+            <p>
+                @item.Description
+            </p>
+        </section>
+       }
+    </div>
+    <section style="text-align:right;padding:1% 0%;">
+        <a asp-action="services" class="btn btn-default">@resource["Schedule_Consultation"]</a>
+    </section>
+</main>

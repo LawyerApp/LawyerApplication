@@ -1,0 +1,173 @@
+﻿@model LawyerApp.Areas.LawyerAdminPanel.Models.CalendarIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section styles{
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href="~/calendar/calendar.css" rel="stylesheet" />
+}
+<main class="container">
+    <div class="row mb-5">
+        <select class="form-control">
+            <option value="0">Select Holidays</option>
+            <option value="1">Configure Lawyers' plan</option>
+            <option value="2">Configure Week days</option>
+        </select>
+    </div>
+    <div class="row calendar-Holidays">
+        <article>
+            <div id="calendar">
+                <div id="calendar_header">
+                    <i class="icon-chevron-left"><</i>
+                    <h1></h1><i class="icon-chevron-right">></i>
+                </div>
+                <div id="calendar_weekdays"></div>
+                <div id="calendar_content"></div>
+            </div>
+        </article>
+    </div>
+    <div class="row team-Members" style="display:none;">
+        @foreach (TeamMemberDto item in Model.teamMembers)
+        {
+            <section class="col-md-4">
+                <a style="text-decoration:none;" asp-area="LawyerAdminPanel" asp-controller="AdminCalendar" asp-action="TeammembersConfiguration" asp-route-id="@item.Id">
+                    <h3 class="text-center">@item.Name @item.Surname</h3>
+                    <img style="height:200px;" class="img-fluid" src="~/Uploads/@item.Img" />
+                </a>
+            </section>
+        }
+    </div>
+    <div class="row week-days" style="display:none;">
+        <article class="col-md-3"></article>
+        <article class="col-md-6">
+            @foreach (var item in Model.weekDaysKeyValue.weekDays)
+            {
+                if (item.Value == "true")
+                {
+                    <button class="btn btn-success week-days-change" style="width:30%;margin:5px;" value="@item.Value">@item.Key</button>
+                }
+                else
+                {
+                    <button class="btn btn-danger week-days-change" style="width:30%;margin:5px;" value="@item.Value">@item.Key</button>
+                }
+            }
+            <div class="mt-2">
+                <input placeholder="limit" type="number" value="@Model.weekDaysKeyValue.limit" class="form-control w-50 d-inline-block" />
+                <button id="daylimitConfig" class="btn btn-success">Configure limit</button>
+            </div>
+        </article>
+
+    </div>
+</main>
+
+@section scripts{
+    <script src="~/calendar/config.js"></script>
+    <script src="~/calendar/calendar.js"></script>
+    <script>
+        $(document).ready(function () {
+            ////configure enable days
+            try {
+                let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                let url = "/LawyerAdminPanel/AdminCalendar/GetweekDays?=" + date;
+                Infrastructures.checkAndPaintDays(url,date);
+            } catch (e) {
+                alert("something went wrong try again later");
+            }
+            $("#calendar_header i").click(function () {
+                try {
+                    let date = createDateFromString({ day: "01", fullDate: document.querySelector("#calendar_header h1").innerText, time: "02:00" });
+                    let url = "/LawyerAdminPanel/AdminCalendar/GetweekDays?=" + date;
+                    Infrastructures.checkAndPaintDays(url,date);
+                } catch (e) {
+                    alert("something went wrong try again later");
+                }
+            });
+
+            ////configure limit
+            $("#daylimitConfig").click(function () {
+                let elem = $(this).siblings("input")[0];
+                $.ajax({
+                    url: "/LawyerAdminPanel/AdminCalendar/configureLimit",
+                    data: {
+                        day: elem.value
+                    },
+                    success: function (re) {
+                        if (re !== 404) {
+                            elem.value = re;
+                        } else
+                            elem.setAttribute("placeholder", "something went wrong try again later");
+                    }
+                });
+            });
+
+            //configuration base
+            $("main select").change(function () {
+                let val = parseInt($(this).val());
+                if (val === 0) {
+                    $(".calendar-Holidays").show();
+                    $(".team-Members").hide();
+                    $(".week-days").hide();
+                }
+                else if (val === 1) {
+                    $(".calendar-Holidays").hide();
+                    $(".team-Members").show();
+                    $(".week-days").hide();
+                } else {
+                    $(".calendar-Holidays").hide();
+                    $(".team-Members").hide();
+                    $(".week-days").show();
+                }
+            });
+
+            ////configure week days
+            $(".week-days-change").click(function () {
+                try {
+                    let element = $(this);
+                    $.ajax({
+                        url: "/LawyerAdminPanel/AdminCalendar/configuredays",
+                        data: {
+                            weekday: element.text()
+                        },
+                        success: function (res) {
+                            if (res === true) {
+                                element.removeClass("btn-danger");
+                                element.addClass("btn-success");
+                            } else {
+                                element.addClass("btn-danger");
+                                element.removeClass("btn-success");
+                            }
+                        }
+                    });
+                } catch (e) {
+                    alert("something went wrong try again later");
+                }
+            });
+
+            ////note holidays
+            $(document).on("click", "#calendar_content div", function () {
+                try {
+                    if (!$(this).hasClass("no-work")) {
+                        let element = $(this);
+                        let date = createDateFromString({ day: element.text(), fullDate: $("#calendar_header h1").text(), time: "02:00" });
+                        if (new Date() < new Date(date)) {
+                            $.ajax({
+                                url: "/LawyerAdminPanel/AdminCalendar/noteHoliday",
+                                data: {
+                                    dt: date
+                                },
+                                success: function (res) {
+                                    if (res === 200)
+                                        window.location.reload();
+                                }
+                            });
+                        }
+                    }
+                } catch (e) {
+                    alert("something went wrong try again later");
+                }
+            });
+
+        });
+    </script>
+}

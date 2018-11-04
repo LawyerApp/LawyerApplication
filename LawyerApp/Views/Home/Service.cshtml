@@ -1,0 +1,11 @@
+﻿@model LawyerApp.Areas.LawyerAdminPanel.Models.AreaDto
+@inject IStringLocalizer<SharedResource> resource;
+
+<main class="learn-more-main">
+    <h1>@Model.Name</h1>
+    <span>1 @resource["hr"]  |  @resource["Consultation_Meeting"]</span>
+    <a href="#" class="btn">@resource["Book_Now"]</a>
+    <p>
+       @Model.Description
+    </p>
+</main>

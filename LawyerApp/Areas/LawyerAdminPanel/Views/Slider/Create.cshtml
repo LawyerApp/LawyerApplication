@@ -1,0 +1,70 @@
+﻿@model SliderCreateModel
+
+@section styles{
+    <link rel="stylesheet" href="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css" />
+}
+
+<header class="page-header">
+    <h2>Slider</h2>
+    <div class="right-wrapper text-right">
+        <ol class="breadcrumbs">
+            <li>
+                <a asp-action="index" asp-controller="team">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li><span>Slider</span></li>
+            <li><span>Create</span></li>
+        </ol>
+
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                </div>
+
+                <h2 class="card-title">Create New Slider</h2>
+            </header>
+            <div class="card-body">
+                <form asp-action="create" asp-controller="slider" class="form-horizontal form-bordered" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">Please fix the error.</div>
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2">File Upload</label>
+                        <div class="col-lg-6">
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="input-append">
+                                    <div class="uneditable-input">
+                                        <i class="fa fa-file fileupload-exists"></i>
+                                        <span class="fileupload-preview"></span>
+                                    </div>
+                                    <span class="btn btn-default btn-file">
+                                        <span class="fileupload-exists">Change</span>
+                                        <span class="fileupload-new">Select file</span>
+                                        <input type="file" asp-for="Img" />
+                                    </span>
+                                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                </div>
+                                <span asp-validation-for="Img" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <button type="submit" id="btnSubmit" class="btn btn-primary col-4 mr-4">Create</button>
+                        <a asp-action="index" asp-controller="slider" class="btn btn-outline-primary col-4">Back To List</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+@section scripts{
+    <script src="~/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

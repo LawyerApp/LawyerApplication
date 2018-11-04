@@ -1,0 +1,48 @@
+﻿@model LawyerApp.Models.ViewModels.ScheduleViewModel
+@{
+    ViewData["Title"] = "NoteAndCheckDate";
+}
+
+<main class="container">
+    <header class="mt-5">
+        <h1>Add Your Info</h1>
+    </header>
+    <div class="row">
+        <div class="main-form col-md-6 col-12">
+            <form asp-action="ScheduleDay" asp-controller="Calendar" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message"></label>
+                    <textarea asp-for="Message" class="form-control"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <input type="submit" style="cursor:pointer;" class="btn btn-dark w-100" value="Send Info" />
+            </form>
+        </div>
+        <div class="main-info col-md-6 col-12">
+
+        </div>
+    </div>
+</main>
+

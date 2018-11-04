@@ -1,0 +1,64 @@
+﻿@model Message
+
+<header class="page-header">
+    <h2>Messages</h2>
+    <div class="right-wrapper text-right">
+        <ol class="breadcrumbs">
+            <li>
+                <a asp-action="index" asp-controller="team">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li><span>Messages</span></li>
+            <li><span>Reply</span></li>
+        </ol>
+
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                </div>
+
+                <h2 class="card-title">Reply Message</h2>
+            </header>
+            <div class="card-body">
+                <form asp-action="reply" asp-controller="message" class="form-horizontal form-bordered" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">Please fix the error.</div>
+                    @Html.HiddenFor(m=>m.Id)
+                    @Html.AntiForgeryToken()
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">Subject</label>
+
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label text-lg-right pt-2"></label>
+                            <div class="col-lg-6">
+                                <input type="text" asp-for="Subject" class="form-control input-rounded" placeholder="Subject">
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+                        </div>
+                   
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">Message</label>
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label text-lg-right pt-2"></label>
+                            <div class="col-lg-6">
+                                <textarea type="text" asp-for="MessageContent" rows="5" class="form-control input-rounded" placeholder="Message"></textarea>
+                                <span asp-validation-for="MessageContent" class="text-danger"></span>
+                            </div>
+                        </div>
+                   
+                    <div class="form-group row justify-content-center">
+                        <button type="submit" class="btn btn-primary col-4 mr-4">Reply</button>
+                        <a asp-action="index" asp-controller="message" class="btn btn-outline-primary col-4">Back To List</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

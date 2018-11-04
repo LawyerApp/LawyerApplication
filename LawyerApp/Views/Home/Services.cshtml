@@ -1,0 +1,32 @@
+﻿@model IEnumerable<LawyerApp.Areas.LawyerAdminPanel.Models.AreaDto>
+@inject IStringLocalizer<SharedResource> resource;
+
+<main class="book-main">
+    <h1>@resource["Our_Services"]</h1>
+    <div class="book-main-content">
+        @foreach (var item in Model)
+        {
+            <section>
+                <h3><a asp-action="service" asp-route-id="@item.Id">@item.Name</a></h3>
+                <span>
+                    1 @resource["hr"] |<br> @resource["Consultation_Meeting"]
+                </span>
+                @{
+                    string description = (item.Description.Length > 180) ? item.Description.Substring(0, 180) + " ..." : item.Description;
+                }
+                <p>
+                    @description
+                </p>
+                <a asp-action="service" asp-route-id="@item.Id" class="learn-more">@resource["Learn_More"]</a>
+                <a asp-action="Index" asp-controller="Calendar" asp-route-id="@item.Id" class="btn book-now changedPage">@resource["Book_Now"]</a>
+            </section>
+        }
+    </div>
+</main>
+@section scripts{
+    <script>
+        $(".changedPage").click(function () {
+            localStorage["LawName"] = this.parentElement.children[0].children[0].innerText;
+        });
+    </script>
+    }

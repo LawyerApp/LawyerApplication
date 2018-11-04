@@ -1,0 +1,85 @@
+﻿@model UserEditModel
+
+<header class="page-header">
+    <h2>Users</h2>
+    <div class="right-wrapper text-right">
+        <ol class="breadcrumbs">
+            <li>
+                <a asp-action="index" asp-controller="team">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li><span>User</span></li>
+            <li><span>Edit</span></li>
+        </ol>
+
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                </div>
+
+                <h2 class="card-title">Edit User</h2>
+            </header>
+            <div class="card-body">
+                <form asp-action="edit" asp-controller="account" class="form-horizontal form-bordered" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">Please fix the error.</div>
+                    @Html.HiddenFor(m=>m.Id)
+                    @Html.AntiForgeryToken()
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">@Html.DisplayNameFor(m => m.Username)</label>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2"></label>
+                        <div class="col-lg-6">
+                            <input type="text" asp-for="Username" class="form-control input-rounded" placeholder="Enter a username">
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">@Html.DisplayNameFor(m => m.Email)</label>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded1"></label>
+                        <div class="col-lg-6">
+                            <input type="text" asp-for="Email" class="form-control input-rounded" placeholder="Enter a email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">@Html.DisplayNameFor(m => m.Name)</label>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded1"></label>
+                        <div class="col-lg-6">
+                            <input type="text" asp-for="Name" class="form-control input-rounded" placeholder="Enter a name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <label class="col-lg-4 control-label text-lg-right pt-2 h6" for="inputRounded">@Html.DisplayNameFor(m => m.Password)</label>
+
+                    <div class="form-group row">
+                        <label class="col-lg-3 control-label text-lg-right pt-2" for="inputRounded1"></label>
+                        <div class="col-lg-6">
+                            <input type="password" asp-for="Password" class="form-control input-rounded" placeholder="Enter a password">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <button type="submit" class="btn btn-primary col-4 mr-4">Save</button>
+                        <a asp-action="index" asp-controller="account" class="btn btn-outline-primary col-4">Back To List</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+}
